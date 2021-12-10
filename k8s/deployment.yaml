@@ -6,7 +6,7 @@ metadata:
   name: nodejs-service-a
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -32,6 +32,15 @@ spec:
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /usr/src/app/logs
+              name: nodejs-service-a-storage # from volumes.name
+
+      volumes:
+        - name: nodejs-service-a-storage # any name
+          persistentVolumeClaim:
+            claimName: nodejs-service-a-pvc # reference to pvc.yaml name
+
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "~/code/architecture/nodejs-deploy-with-kubernetes/data"
+    path: "/home/tiagoboeing/k8s-data"
