@@ -1,3 +1,5 @@
+https://www.notion.so/tiagoboeing/Fazendo-deploy-do-nodejs-api-no-Minikube-Kubernetes-25b2f5ba6aeb4840a9e32b69a53efb9c
+
 ## Docker
 
 ```docker
