@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nodejs-service-a
+spec:
+  template:
+    metadata:
+      annotations:
+        configmap-version: 1
+data:
+  MESSAGE: "My new ConfigMap"

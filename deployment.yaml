@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-service-a
+spec:
+  selector:
+    matchLabels:
+      run: nodejs-service-a
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: nodejs-service-a
+    spec:
+      containers:
+        - name: nodejs-service-a
+          image: tiagoboeing/nodejs-service-a
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 3000
