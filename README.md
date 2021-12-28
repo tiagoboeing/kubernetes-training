@@ -1,29 +1,4 @@
-https://www.notion.so/tiagoboeing/Fazendo-deploy-do-nodejs-api-no-Minikube-Kubernetes-25b2f5ba6aeb4840a9e32b69a53efb9c
+# Kubernetes training
 
-## Docker
-
-```docker
-
-# Build
-docker build -t tiagoboeing/nodejs-service-a .
-
-# Criar tag
-docker tag tiagoboeing/nodejs-service-a:latest localhost:5000/tiagoboeing/nodejs-service-a
-
-# Subir registry local
-docker run -d -p 5000:5000 --name registry registry:2
-
-# Enviar image para registry
-docker push localhost:5000/tiagoboeing/nodejs-service-a
-```
-
-### Kubernetes
-
-```
-# Cria redirecionamento de porta
-kubectl port-forward nodejs-service-a-796dd77855-9d9hx 3000:3000 -n workshop-dev
-
-# Rollout sem downtime para novo ConfigMap
-kubectl rollout restart deployments nodejs-service-a -n workshop-dev
-
-```
+- [Via Confluence](https://www.notion.so/tiagoboeing/Fazendo-deploy-do-nodejs-api-no-Minikube-Kubernetes-25b2f5ba6aeb4840a9e32b69a53efb9c) → [pasta](./via-confluence)
+- [Maratona Kubernetes - Erick Wendel (Microsoft Brasil)](https://www.youtube.com/playlist?list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv) → [pasta](./k8s-microsoft-br)
