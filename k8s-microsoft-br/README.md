@@ -2,17 +2,13 @@
 
 [Link da playlist](https://www.youtube.com/playlist?list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv)
 
-## Useful commands
-
-### Azure
-
 1. Download & install & configure the [AZ CLI](https://docs.microsoft.com/pt-br/cli/azure/);
 2. Set a subscription to send commands;
 3. Create a resource group to separate the resources inside the Azure in different scopes;
 4. Create a Container Registry (CR) to receive the Docker images;
 5. Prepare the Docker image and send to Container Registry;
 
-#### Authentication
+## Authentication
 
 ```bash
 # Login on account
@@ -22,14 +18,16 @@ az login
 az account set --subscription "NAME"
 ```
 
-#### Resource groups
+## Resource groups
 
 ```bash
 # Create resource group
 az group create --name "kubernetes-training" --location eastus
 ```
 
-#### Container registry
+## Container registry
+
+The container registry is the place where we use it to store de Docker images. All images are private on the registry and Azure has 12 months free tier.
 
 ```bash
 # Create Container registry
@@ -44,7 +42,7 @@ az acr login --name "tiagoboeing"
 az acr list --resource-group kubernetes-training --output table
 ```
 
-##### Docker image
+### Docker image
 
 Before sending to Container Registry, we need to create a tag to our Docker image containing the registry name.
 
@@ -71,7 +69,9 @@ Looking at the Azure console you can see the image on "repositories" menu:
 
 ![](docs/images/azure-console-acr-repository.png)
 
-##### Azure Container Service
+## Azure Container Instances
+
+[Product page](https://azure.microsoft.com/en-us/services/container-instances/)
 
 In our example we've:
 
@@ -79,7 +79,7 @@ In our example we've:
 - RESOURCE GROUP=**kubernetes-training**
 - LOCATION=**eastus**
 
-Let's create a Container Services for each service:
+Let's create a Container Instances for each service:
 
 <details>
   <summary>mongo</summary>
@@ -142,7 +142,6 @@ az container create --resource-group kubernetes-training \
 
 > `image` use the same pushed to Container Registry.
 
-
 ```bash
 # see logs (again)
 az container logs --resource-group kubernetes-training --name nodejs-express
@@ -152,3 +151,41 @@ az container show --resource-group kubernetes-training --name nodejs-express --q
 ```
 
 </details>
+
+---
+
+### Removing Container Instances
+
+```bash
+az container delete --resource-group kubernetes-training --name nodejs-express --yes
+az container delete --resource-group kubernetes-training --name mongodb --yes
+```
+
+## Azure Kubernetes Service
+
+[Product page](https://azure.microsoft.com/en-us/services/kubernetes-service/)
+
+### Creating cluster
+
+```bash
+az aks create -g kubernetes-training \
+  --name k8s-cluster \
+  --dns-name-prefix k8s-cluster \
+  --generate-ssh-keys \
+  --node-count 2
+  --node-vm-size Standard_A1_v2
+```
+
+**Info**
+
+- `-g` it's a alias to `resource-group`
+- It's possible specify de [VM size](https://docs.microsoft.com/azure/virtual-machines/sizes) to improve costs with `--node-vm-size` parameter.
+
+> The creation step usually takes 15 minutes on average.
+
+### Instal AKS CLI
+
+```bash
+az aks install-cli
+```
+
