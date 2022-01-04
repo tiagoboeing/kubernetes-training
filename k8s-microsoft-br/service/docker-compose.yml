@@ -1,0 +1,18 @@
+version: '3'
+services:
+  nodejs-express:
+    image: tiagoboeing/nodejs-express
+    ports:
+      - 3000:3000
+    environment:
+      MESSAGE: 'NodeJS with Express'
+
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  mongodb:
+    image: mongo:4.4.11
+    ports:
+      - 27017:27017
