@@ -2,11 +2,31 @@
 
 [Link da playlist](https://www.youtube.com/playlist?list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv)
 
+## Table of contents
+
+* [Maratona Kubernetes - Azure (Microsoft Brasil)](#maratona-kubernetes---azure-microsoft-brasil)
+  * [Table of contents](#table-of-contents)
+  * [Steps overview](#steps-overview)
+  * [Authentication](#authentication)
+  * [Resource groups](#resource-groups)
+  * [Container registry](#container-registry)
+    * [Docker image](#docker-image)
+  * [Azure Container Instances](#azure-container-instances)
+    * [Removing Container Instances](#removing-container-instances)
+  * [Azure Kubernetes Service](#azure-kubernetes-service)
+    * [Creating cluster](#creating-cluster)
+    * [Instal AKS CLI](#instal-aks-cli)
+
+## Steps overview
+
 1. Download & install & configure the [AZ CLI](https://docs.microsoft.com/pt-br/cli/azure/);
-2. Set a subscription to send commands;
-3. Create a resource group to separate the resources inside the Azure in different scopes;
-4. Create a Container Registry (CR) to receive the Docker images;
-5. Prepare the Docker image and send to Container Registry;
+2. [Set a subscription to send commands](#authentication);
+3. [Create a resource group to separate the resources inside the Azure in different scopes](#resource-groups);
+4. [Create a Container Registry (CR) to receive the Docker images](#container-registry);
+5. [Prepare the Docker image and send to Container Registry](#docker-image);
+6. Deploy types
+   1. [Azure Container Instances](#azure-container-instances)
+   2. [Azure Kubernetes Service](#azure-kubernetes-service)
 
 ## Authentication
 
@@ -188,4 +208,3 @@ az aks create -g kubernetes-training \
 ```bash
 az aks install-cli
 ```
-
