@@ -1,4 +1,8 @@
-# NodeJS deploy with minikube (Kubernetes)
+# NodeJS deploy with Minikube (Kubernetes)
+
+- [Install & configure Minikube](https://minikube.sigs.k8s.io/docs/start/) (all platforms); or if you don't want to use Minikube, alternatively:
+  - **Windows/Mac**: use Docker Desktop and [enable Kubernetes](https://docs.docker.com/desktop/kubernetes/); or
+  - **Linux/Windows/Mac**: [manually install Kubernetes](https://kubernetes.io/pt-br/docs/setup/)
 
 ## Docker
 
