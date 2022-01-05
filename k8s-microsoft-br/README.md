@@ -1,11 +1,10 @@
 # Maratona Kubernetes - Azure (Microsoft Brasil)
 
-[Link da playlist](https://www.youtube.com/playlist?list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv)
+> [Link da playlist](https://www.youtube.com/playlist?list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv)
 
-## Table of contents
+---
 
 * [Maratona Kubernetes - Azure (Microsoft Brasil)](#maratona-kubernetes---azure-microsoft-brasil)
-  * [Table of contents](#table-of-contents)
   * [Steps overview](#steps-overview)
   * [Authentication](#authentication)
   * [Resource groups](#resource-groups)
