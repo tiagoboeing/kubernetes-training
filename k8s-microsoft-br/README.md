@@ -13,8 +13,12 @@
   * [Azure Container Instances](#azure-container-instances)
     * [Removing Container Instances](#removing-container-instances)
   * [Azure Kubernetes Service](#azure-kubernetes-service)
-    * [Creating cluster](#creating-cluster)
+    * [Cheatsheet](#cheatsheet)
     * [Instal AKS CLI](#instal-aks-cli)
+    * [Creating cluster](#creating-cluster)
+    * [Binding local k8s with Azure AKS](#binding-local-k8s-with-azure-aks)
+    * [Open AKS dashboard](#open-aks-dashboard)
+    * [Running pods](#running-pods)
 
 ## Steps overview
 
@@ -184,6 +188,25 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
 
 [Product page](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 
+### Cheatsheet
+
+- Namespaces
+  - Create: `kubectl create namespace <NAME>`
+- Pods
+  - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
+  - View: `kubectl get pods` or `kubectl get pods -o wide`
+  - Delete: `kubectl delete pod <POD-ID>`
+  - Describe: `kubectl describe pods <POD-NAME>`
+  - Monitoring usage: `kubectl top pod mongodb`
+
+### Instal AKS CLI
+
+> [Video - module 4 - lesson 4](https://www.youtube.com/watch?v=IlKALzJn5nQ&list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv&index=21&t=322s&ab_channel=MicrosoftBrasil)
+
+```bash
+az aks install-cli
+```
+
 ### Creating cluster
 
 ```bash
@@ -202,8 +225,34 @@ az aks create -g kubernetes-training \
 
 > The creation step usually takes 15 minutes on average.
 
-### Instal AKS CLI
+### Binding local k8s with Azure AKS
+
+> [Video - module 4 - lesson 4](https://www.youtube.com/watch?v=IlKALzJn5nQ&list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv&index=21&t=322s&ab_channel=MicrosoftBrasil)
 
 ```bash
-az aks install-cli
+az account set --subscription SUBSCRIPTION-ID
+az aks get-credentials --resource-group kubernetes-training --name k8s-cluster
+# now you can use "kubectl" commands
+```
+
+### Open AKS dashboard
+
+```bash
+az aks browse --resource-group kubernetes-training --name k8s-cluster
+```
+
+### Running pods
+
+```bash
+kubectl run mongodb --image mongo:4.4.11 --port 27017
+
+# And to see pods, run:
+kubectl get pods -o wide
+
+# get the pod IP and overwrite on env
+
+kubectl run nodejs-express \
+  --image tiagoboeing/nodejs-express:latest \
+  --env="MONGO_URL=10.244.1.8" \
+  --env="MESSAGE=Running on AKS"
 ```
