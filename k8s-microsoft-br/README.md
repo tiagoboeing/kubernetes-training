@@ -18,7 +18,10 @@
     * [Creating cluster](#creating-cluster)
     * [Binding local k8s with Azure AKS](#binding-local-k8s-with-azure-aks)
     * [Open AKS dashboard](#open-aks-dashboard)
-    * [Running pods](#running-pods)
+    * [Iterative model](#iterative-model)
+      * [Running pods](#running-pods)
+      * [Exposing by service - LoadBalancer](#exposing-by-service---loadbalancer)
+    * [Declarative model](#declarative-model)
 
 ## Steps overview
 
@@ -190,6 +193,7 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
 
 ### Cheatsheet
 
+- [Connect](#binding-local-k8s-with-azure-aks)
 - Namespaces
   - Create: `kubectl create namespace <NAME>`
 - Pods
@@ -198,6 +202,11 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
   - Delete: `kubectl delete pod <POD-ID>`
   - Describe: `kubectl describe pods <POD-NAME>`
   - Monitoring usage: `kubectl top pod mongodb`
+  - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
+- Logs
+  - View: `kubectl logs <POD-NAME>`
+- Services
+  - List: `kubectl get service`
 
 ### Instal AKS CLI
 
@@ -241,7 +250,9 @@ az aks get-credentials --resource-group kubernetes-training --name k8s-cluster
 az aks browse --resource-group kubernetes-training --name k8s-cluster
 ```
 
-### Running pods
+### Iterative model
+
+#### Running pods
 
 ```bash
 kubectl run mongodb --image mongo:4.4.11 --port 27017
@@ -256,3 +267,18 @@ kubectl run nodejs-express \
   --env="MONGO_URL=10.244.1.8" \
   --env="MESSAGE=Running on AKS"
 ```
+
+#### Exposing by service - LoadBalancer
+
+```bash
+kubectl expose pod nodejs-express --port 3000 --type LoadBalancer
+
+# Get the service IP
+kubectl get service
+
+# Get service IP and access
+curl 52.179.115.234:3000
+# the output will be: "<h1>Hello from NodeJS Service A</h1>"
+```
+
+### Declarative model
