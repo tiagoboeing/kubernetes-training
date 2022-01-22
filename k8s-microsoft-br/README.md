@@ -194,17 +194,28 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
 ### Cheatsheet
 
 - [Connect](#binding-local-k8s-with-azure-aks)
+- Documentation:
+  - Explain: `kubectl explain pods`
 - Namespaces
   - Create: `kubectl create namespace <NAME>`
 - Pods
   - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
   - Create from file: `kubectl create -f pods/nodejs-express.json`
+  - Get
+    - Only pod: `kubectl get pod <POD-NAME>`
+    - Configs:
+      - YAML: `kubectl get pod <POD-NAME> -o yaml`
+      - JSON: `kubectl get pod <POD-NAME> -o json`
+      - Get specific property: `kubectl get pod <POD-NAME> -o yaml | grep podIP`
   - View: `kubectl get pods` or `kubectl get pods -o wide`
   - Delete: `kubectl delete pod <POD-ID>`
     - Delete by label: `kubectl delete pod -l version=v1`
   - Describe: `kubectl describe pods <POD-NAME>`
   - Monitoring usage: `kubectl top pod mongodb`
   - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
+  - Exec commands:
+    - bash: `kubectl exec -it <POD-NAME> -- /bin/bash`
+    - sh: `kubectl exec -it <POD-NAME> -- /bin/sh`
 - Logs
   - View: `kubectl logs <POD-NAME>`
 - Services
