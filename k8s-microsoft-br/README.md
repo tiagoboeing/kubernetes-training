@@ -18,10 +18,13 @@
     * [Creating cluster](#creating-cluster)
     * [Binding local k8s with Azure AKS](#binding-local-k8s-with-azure-aks)
     * [Open AKS dashboard](#open-aks-dashboard)
-    * [Iterative model](#iterative-model)
-      * [Running pods](#running-pods)
+    * [Managing pods](#managing-pods)
+      * [Iterative model](#iterative-model)
       * [Exposing by service - LoadBalancer](#exposing-by-service---loadbalancer)
-    * [Declarative model](#declarative-model)
+      * [Declarative model](#declarative-model)
+    * [Secrets](#secrets)
+      * [Creating secret](#creating-secret)
+      * [Using secret](#using-secret)
 
 ## Steps overview
 
@@ -150,7 +153,7 @@ az acr update -n tiagoboeing --admin-enabled true
 az acr credential show -n tiagoboeing --query passwords
 ```
 
-> Password in this example is: `4HKsNvJQ1Yf/OiYHJ3Rg4Xxk1X5fOA8e`
+> Password in this example is: `yyyIvQaipNjFzWdi22ZX91xx23pC/88Z`
 
 With the password we can configure the deploy:
 
@@ -162,7 +165,7 @@ az container create --resource-group kubernetes-training \
   --port 3000 \
   --environment-variables MESSAGE='Running on Azure' MONGO_URL=52.226.198.59 \
   --registry-username tiagoboeing \
-  --registry-password 4HKsNvJQ1Yf/OiYHJ3Rg4Xxk1X5fOA8e \
+  --registry-password yyyIvQaipNjFzWdi22ZX91xx23pC/88Z \
   --ip-address public
 ```
 
@@ -210,7 +213,7 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
   - View: `kubectl get pods` or `kubectl get pods -o wide`
   - Delete: `kubectl delete pod <POD-ID>`
     - Delete by label: `kubectl delete pod -l version=v1`
-  - Describe: `kubectl describe pods <POD-NAME>`
+  - Describe: `kubectl describe pod <POD-NAME>`
   - Monitoring usage: `kubectl top pod mongodb`
   - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
   - Exec commands:
@@ -220,6 +223,9 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
   - View: `kubectl logs <POD-NAME>`
 - Services
   - List: `kubectl get service`
+- Secrets
+  - List: `kubectl get secret`
+  - Describe: `kubectl describe secret <SECRET-NAME>`
 
 ### Instal AKS CLI
 
@@ -263,9 +269,9 @@ az aks get-credentials --resource-group kubernetes-training --name k8s-cluster
 az aks browse --resource-group kubernetes-training --name k8s-cluster
 ```
 
-### Iterative model
+### Managing pods
 
-#### Running pods
+#### Iterative model
 
 ```bash
 kubectl run mongodb --image mongo:4.4.11 --port 27017
@@ -294,7 +300,50 @@ curl 52.179.115.234:3000
 # the output will be: "<h1>Hello from NodeJS Service A</h1>"
 ```
 
-### Declarative model
+#### Declarative model
+
+Here, we're using [this pod specs](./pods/nodejs-express.json) to deploy.
 
 1. Create deployment file (`.json` or `.yaml/.yml`) - [commit](https://github.com/tiagoboeing/kubernetes-training/commit/864bfbf9528250770b3158984773197e0554bcba#diff-914cf53cbfe559f57b89ab8496dbd19a9360b864e80378f8462772354c920b8c);
 2. Create pod with `kubectl create -f pods/nodejs-express.json`
+
+### Secrets
+
+> [Video - module 6 - lesson 2](https://www.youtube.com/watch?v=4sENTISxzew&list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv&index=28&ab_channel=MicrosoftBrasil)
+
+Now, we'll use the image from private Container Registry and test, we need to receive a error because [this pod spec](./secrets/nodejs-express.json) still not use the secrets to authenticate.
+
+> In this case our registry address is: `tiagoboeing.azurecr.io` and the image tag is `tiagoboeing.azurecr.io/nodejs-express:latest`
+
+#### Creating secret
+
+```bash
+kubectl create secret docker-registry acr-credentials \
+  --docker-server=tiagoboeing.azurecr.io \
+  --docker-username=tiagoboeing \
+  --docker-password=yyyIvQaipNjFzWdi22ZX91xx23pC/88Z \
+  --docker-email=contato@tiagoboeing.com
+
+# The password from this example is the above
+```
+
+> To see the ACR password, run: `az acr credential show -n tiagoboeing --query "passwords[0].value"`
+
+#### Using secret
+
+Inside `spec` object, add the following properties:
+
+```json
+{
+  "imagePullSecrets": [
+    {
+      "name": "acr-credentials"
+    }
+  ]
+}
+```
+
+Delete and create the pod again:
+
+- `kubectl delete -f secrets/nodejs-express.json`
+- `kubectl create -f secrets/nodejs-express.json`
