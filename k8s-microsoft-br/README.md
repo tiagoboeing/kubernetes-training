@@ -283,4 +283,4 @@ curl 52.179.115.234:3000
 
 ### Declarative model
 
-1. Create deployment file (`.json` or `.yaml/.yml`) - [commit](#864bfbf9528250770b3158984773197e0554bcba);
+1. Create deployment file (`.json` or `.yaml/.yml`) - [commit](864bfbf9528250770b3158984773197e0554bcba);
