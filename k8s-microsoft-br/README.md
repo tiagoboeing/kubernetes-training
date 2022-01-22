@@ -198,8 +198,10 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
   - Create: `kubectl create namespace <NAME>`
 - Pods
   - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
+  - Create from file: `kubectl create -f pods/nodejs-express.json`
   - View: `kubectl get pods` or `kubectl get pods -o wide`
   - Delete: `kubectl delete pod <POD-ID>`
+    - Delete by label: `kubectl delete pod -l version=v1`
   - Describe: `kubectl describe pods <POD-NAME>`
   - Monitoring usage: `kubectl top pod mongodb`
   - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
@@ -284,3 +286,4 @@ curl 52.179.115.234:3000
 ### Declarative model
 
 1. Create deployment file (`.json` or `.yaml/.yml`) - [commit](https://github.com/tiagoboeing/kubernetes-training/commit/864bfbf9528250770b3158984773197e0554bcba#diff-914cf53cbfe559f57b89ab8496dbd19a9360b864e80378f8462772354c920b8c);
+2. Create pod with `kubectl create -f pods/nodejs-express.json`
