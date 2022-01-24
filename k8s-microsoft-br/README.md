@@ -201,6 +201,8 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
   - Explain: `kubectl explain pods`
 - Namespaces
   - Create: `kubectl create namespace <NAME>`
+- Events
+  - Sorted by timestamp: `kubectl get events --sort-by=.metadata.creationTimestamp`
 - Pods
   - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
   - Create from file: `kubectl create -f pods/nodejs-express.json`
@@ -210,6 +212,7 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
       - YAML: `kubectl get pod <POD-NAME> -o yaml`
       - JSON: `kubectl get pod <POD-NAME> -o json`
       - Get specific property: `kubectl get pod <POD-NAME> -o yaml | grep podIP`
+    - Deleted pods: `kubectl get event -o custom-columns=NAME:.metadata.name | cut -d "." -f1`
   - View: `kubectl get pods` or `kubectl get pods -o wide`
   - Delete: `kubectl delete pod <POD-ID>`
     - Delete by label: `kubectl delete pod -l version=v1`

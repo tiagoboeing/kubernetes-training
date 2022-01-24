@@ -41,6 +41,9 @@ kubectl config set-context --current --namespace=<insert-namespace-name-here>
 # Visualizar eventos de um namespace no Kubernetes
 kubectl get events -n workshop-dev
 
+# Lista por data do evento
+kubectl get events --sort-by=.metadata.creationTimestamp
+
 # Visualizar logs de um node
 kubectl logs -f nodejs-service-a-ddcf9746f-rgw2g
 
