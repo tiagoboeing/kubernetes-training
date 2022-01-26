@@ -229,6 +229,9 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
 - Secrets
   - List: `kubectl get secret`
   - Describe: `kubectl describe secret <SECRET-NAME>`
+- Deployments
+  - Scale: `kubectl scale deployment <NAME> --replicas=<NUMBER>`
+  - Autoscale (HPA): `kubectl autoscale deployment <NAME> --min=<NUMBER> --max=<NUMBER> --cpu-percent=<NUMBER>`
 
 ### Instal AKS CLI
 
