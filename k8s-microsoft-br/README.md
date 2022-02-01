@@ -5,6 +5,7 @@
 ---
 
 * [Maratona Kubernetes - Azure (Microsoft Brasil)](#maratona-kubernetes---azure-microsoft-brasil)
+    * [Cheatsheet](#cheatsheet)
   * [Steps overview](#steps-overview)
   * [Authentication](#authentication)
   * [Resource groups](#resource-groups)
@@ -13,7 +14,6 @@
   * [Azure Container Instances](#azure-container-instances)
     * [Removing Container Instances](#removing-container-instances)
   * [Azure Kubernetes Service](#azure-kubernetes-service)
-    * [Cheatsheet](#cheatsheet)
     * [Instal AKS CLI](#instal-aks-cli)
     * [Creating cluster](#creating-cluster)
     * [Binding local k8s with Azure AKS](#binding-local-k8s-with-azure-aks)
@@ -25,6 +25,46 @@
     * [Secrets](#secrets)
       * [Creating secret](#creating-secret)
       * [Using secret](#using-secret)
+    * [ReplicaSet](#replicaset)
+
+### Cheatsheet
+
+- [Connect](#binding-local-k8s-with-azure-aks)
+- Documentation:
+  - Explain: `kubectl explain pods`
+- Namespaces
+  - Create: `kubectl create namespace <NAME>`
+- Events
+  - Sorted by timestamp: `kubectl get events --sort-by=.metadata.creationTimestamp`
+- Pods
+  - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
+  - Create from file: `kubectl create -f pods/nodejs-express.json`
+  - Get
+    - Only pod: `kubectl get pod <POD-NAME>`
+    - Configs:
+      - YAML: `kubectl get pod <POD-NAME> -o yaml`
+      - JSON: `kubectl get pod <POD-NAME> -o json`
+      - Get specific property: `kubectl get pod <POD-NAME> -o yaml | grep podIP`
+    - Deleted pods: `kubectl get event -o custom-columns=NAME:.metadata.name | cut -d "." -f1`
+  - View: `kubectl get pods` or `kubectl get pods -o wide`
+  - Delete: `kubectl delete pod <POD-ID>`
+    - Delete by label: `kubectl delete pod -l version=v1`
+  - Describe: `kubectl describe pod <POD-NAME>`
+  - Monitoring usage: `kubectl top pod mongodb`
+  - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
+  - Exec commands:
+    - bash: `kubectl exec -it <POD-NAME> -- /bin/bash`
+    - sh: `kubectl exec -it <POD-NAME> -- /bin/sh`
+- Logs
+  - View: `kubectl logs <POD-NAME>`
+- Services
+  - List: `kubectl get service`
+- Secrets
+  - List: `kubectl get secret`
+  - Describe: `kubectl describe secret <SECRET-NAME>`
+- Deployments
+  - Scale: `kubectl scale deployment <NAME> --replicas=<NUMBER>`
+  - Autoscale (HPA): `kubectl autoscale deployment <NAME> --min=<NUMBER> --max=<NUMBER> --cpu-percent=<NUMBER>`
 
 ## Steps overview
 
@@ -194,45 +234,6 @@ az container delete --resource-group kubernetes-training --name mongodb --yes
 
 [Product page](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 
-### Cheatsheet
-
-- [Connect](#binding-local-k8s-with-azure-aks)
-- Documentation:
-  - Explain: `kubectl explain pods`
-- Namespaces
-  - Create: `kubectl create namespace <NAME>`
-- Events
-  - Sorted by timestamp: `kubectl get events --sort-by=.metadata.creationTimestamp`
-- Pods
-  - Run: `kubectl run <POD-NAME> --image <IMAGE>:<VERSION> --port 27017`
-  - Create from file: `kubectl create -f pods/nodejs-express.json`
-  - Get
-    - Only pod: `kubectl get pod <POD-NAME>`
-    - Configs:
-      - YAML: `kubectl get pod <POD-NAME> -o yaml`
-      - JSON: `kubectl get pod <POD-NAME> -o json`
-      - Get specific property: `kubectl get pod <POD-NAME> -o yaml | grep podIP`
-    - Deleted pods: `kubectl get event -o custom-columns=NAME:.metadata.name | cut -d "." -f1`
-  - View: `kubectl get pods` or `kubectl get pods -o wide`
-  - Delete: `kubectl delete pod <POD-ID>`
-    - Delete by label: `kubectl delete pod -l version=v1`
-  - Describe: `kubectl describe pod <POD-NAME>`
-  - Monitoring usage: `kubectl top pod mongodb`
-  - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
-  - Exec commands:
-    - bash: `kubectl exec -it <POD-NAME> -- /bin/bash`
-    - sh: `kubectl exec -it <POD-NAME> -- /bin/sh`
-- Logs
-  - View: `kubectl logs <POD-NAME>`
-- Services
-  - List: `kubectl get service`
-- Secrets
-  - List: `kubectl get secret`
-  - Describe: `kubectl describe secret <SECRET-NAME>`
-- Deployments
-  - Scale: `kubectl scale deployment <NAME> --replicas=<NUMBER>`
-  - Autoscale (HPA): `kubectl autoscale deployment <NAME> --min=<NUMBER> --max=<NUMBER> --cpu-percent=<NUMBER>`
-
 ### Instal AKS CLI
 
 > [Video - module 4 - lesson 4](https://www.youtube.com/watch?v=IlKALzJn5nQ&list=PLB1hpnUGshULerdlzMknMLrHI810xIBJv&index=21&t=322s&ab_channel=MicrosoftBrasil)
@@ -353,3 +354,11 @@ Delete and create the pod again:
 
 - `kubectl delete -f secrets/nodejs-express.json`
 - `kubectl create -f secrets/nodejs-express.json`
+
+### ReplicaSet
+
+Use to create ReplicaSet based on file:
+
+```bash
+kubectl apply -f replicasets/nodejs-express.json
+```

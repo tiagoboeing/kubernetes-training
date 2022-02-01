@@ -1,0 +1,56 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "ReplicaSet",
+  "metadata": {
+    "name": "nodejs-express",
+    "labels": {
+      "version": "v1",
+      "app": "nodejs-express"
+    }
+  },
+  "spec": {
+    "replicas": 3,
+    "selector": {
+      "matchLabels": {
+        "version": "v1",
+        "app": "nodejs-express"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "version": "v1",
+          "app": "nodejs-express"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "nodejs-express",
+            "image": "tiagoboeing/nodejs-express:latest",
+            "ports": [
+              {
+                "containerPort": 3000
+              }
+            ],
+            "env": [
+              {
+                "name": "MONGO_URL",
+                "value": "10.244.1.8"
+              },
+              {
+                "name": "MESSAGE",
+                "value": "Running on AKS with ReplicaSet"
+              }
+            ]
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "acr-credentials"
+          }
+        ]
+      }
+    }
+  }
+}
