@@ -28,6 +28,7 @@
     * [ReplicaSet](#replicaset)
     * [Services](#services)
       * [Iterative model](#iterative-model-1)
+      * [Declarative model](#declarative-model-1)
 
 ### Cheatsheet
 
@@ -60,13 +61,17 @@
 - Logs
   - View: `kubectl logs <POD-NAME>`
 - Services
-  - List: `kubectl get service`
+  - List: `kubectl get service` or `kubectl get svc`
 - Secrets
   - List: `kubectl get secret`
   - Describe: `kubectl describe secret <SECRET-NAME>`
 - Deployments
   - Scale: `kubectl scale deployment <NAME> --replicas=<NUMBER>`
   - Autoscale (HPA): `kubectl autoscale deployment <NAME> --min=<NUMBER> --max=<NUMBER> --cpu-percent=<NUMBER>`
+- ReplicaSet
+  - View: `kubectl get replicaSet` or `kubectl get rs`
+- ReplicationController
+  - View: `kubectl get replicationController` or `kubectl get rc`
 
 ## Steps overview
 
@@ -362,7 +367,7 @@ Delete and create the pod again:
 Use to create ReplicaSet based on file:
 
 ```bash
-kubectl apply -f replicasets/nodejs-express.json
+kubectl apply -f replicasets/nodejs-express.yaml
 ```
 
 ### Services
@@ -373,7 +378,7 @@ kubectl apply -f replicasets/nodejs-express.json
 # After create, check services list with:
 # kubectl get svc
 
-kubectl expose -f replicasets/nodejs-express.json \
+kubectl expose -f replicasets/nodejs-express.yaml \
   --port 3000 \
   --type LoadBalancer
 
@@ -387,4 +392,17 @@ kubectl expose pod mongodb \
   --name mongo-svc
 
 # Now you can comunicate via service name (use "mongo-svc" as hostname)
+```
+
+#### Declarative model
+
+```bash
+# Create MongoDB pod
+kubectl apply -f services/mongodb-pod.yaml
+
+# Create service
+kubectl apply -f services/mongodb-svc.yaml
+
+# Create service to app
+kubectl apply -f services/nodejs-express-svc.yaml
 ```

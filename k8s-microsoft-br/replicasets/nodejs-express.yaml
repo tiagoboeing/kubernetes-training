@@ -27,7 +27,7 @@ spec:
             - containerPort: 3000
           env:
             - name: MONGO_URL
-              value: mongo-svc
+              value: mongodb-svc
 
             - name: MESSAGE
               value: Running on AKS with ReplicaSet

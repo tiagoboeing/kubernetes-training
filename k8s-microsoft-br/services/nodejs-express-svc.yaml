@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-express-svc
+  labels:
+    version: v1
+    app: nodejs-express
+
+spec:
+  selector:
+    app: nodejs-express # used to match deployment
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
