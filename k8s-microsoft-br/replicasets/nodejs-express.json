@@ -36,7 +36,7 @@
             "env": [
               {
                 "name": "MONGO_URL",
-                "value": "10.244.1.8"
+                "value": "mongo-svc"
               },
               {
                 "name": "MESSAGE",

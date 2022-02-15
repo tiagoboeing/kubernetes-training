@@ -26,6 +26,8 @@
       * [Creating secret](#creating-secret)
       * [Using secret](#using-secret)
     * [ReplicaSet](#replicaset)
+    * [Services](#services)
+      * [Iterative model](#iterative-model-1)
 
 ### Cheatsheet
 
@@ -48,7 +50,7 @@
     - Deleted pods: `kubectl get event -o custom-columns=NAME:.metadata.name | cut -d "." -f1`
   - View: `kubectl get pods` or `kubectl get pods -o wide`
   - Delete: `kubectl delete pod <POD-ID>`
-    - Delete by label: `kubectl delete pod -l version=v1`
+    - Delete by label: `kubectl delete pod -l version=v1` or `delete pod --selector=app=<LABEL>`
   - Describe: `kubectl describe pod <POD-NAME>`
   - Monitoring usage: `kubectl top pod mongodb`
   - Expose: `kubectl expose pod <POD-NAME> --port <PORT> --type LoadBalancer`
@@ -361,4 +363,28 @@ Use to create ReplicaSet based on file:
 
 ```bash
 kubectl apply -f replicasets/nodejs-express.json
+```
+
+### Services
+
+#### Iterative model
+
+```bash
+# After create, check services list with:
+# kubectl get svc
+
+kubectl expose -f replicasets/nodejs-express.json \
+  --port 3000 \
+  --type LoadBalancer
+
+# Only internal
+# --type NodePort
+
+
+kubectl expose pod mongodb \
+  --port 27017 \
+  --type NodePort \
+  --name mongo-svc
+
+# Now you can comunicate via service name (use "mongo-svc" as hostname)
 ```
