@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-express
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodejs-express
+
+  template:
+    metadata:
+      labels:
+        version: v1
+        app: nodejs-express
+
+    spec:
+      containers:
+        - name: nodejs-express
+          image: tiagoboeing/nodejs-express:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: MONGO_URL
+              value: mongodb-svc
+
+            - name: MESSAGE
+              value: Running with deployment
+
+      imagePullSecrets:
+        - name: acr-credentials

@@ -29,6 +29,8 @@
     * [Services](#services)
       * [Iterative model](#iterative-model-1)
       * [Declarative model](#declarative-model-1)
+    * [Deployments](#deployments)
+      * [Declarative model](#declarative-model-2)
 
 ### Cheatsheet
 
@@ -405,4 +407,14 @@ kubectl apply -f services/mongodb-svc.yaml
 
 # Create service to app
 kubectl apply -f services/nodejs-express-svc.yaml
+```
+
+### Deployments
+
+#### Declarative model
+
+```bash
+kubectl apply -f deployments/nodejs-express-deployment.yaml
+
+kubectl apply -f deployments/mongodb-deployment.yaml
 ```
